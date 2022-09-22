@@ -1,0 +1,114 @@
+getgenv().farmer = false;
+getgenv().sell = false;
+getgenv().eggs = false;
+getgenv().selectegg = "Basic Egg"
+
+function dotap()
+         while getgenv().farmer == true do
+            local args = {
+            [1] = "Roll2"
+            }
+            game:GetService("ReplicatedStorage").Remote:FireServer(unpack(args))
+            wait(.01)
+        end
+end
+
+function autosell()
+            while getgenv().sell == true do
+            local args = {
+             [1] = "Sell2",
+             [2] = workspace.Sells:FindFirstChild("Pink Sugar")
+            }
+            game:GetService("ReplicatedStorage").Remote:FireServer(unpack(args))
+            wait(.01)
+        end
+end
+
+function autoegg()
+            while getgenv().eggs == true do
+            local args = {
+                [1] = "Pet",
+                [2] = "Egg",
+                [3] = "Hatch",
+                [4] = getgenv().selectegg,
+                [5] = 1
+            }
+            game:GetService("ReplicatedStorage").Remote:FireServer(unpack(args))
+            wait(6)
+        end
+end
+
+function getCurrentPlayerPOS()
+    local plyr = game.Player.LocalPlayer;
+    if plyr.Character then
+        return plyr.Character.HumanoidRootPart.Position;
+    end
+    return false;
+end
+
+function TeleportTO(placeCFrame)
+    local plyr = game.Players.LocalPlayer;
+    if plyr.Character then
+        return plyr.Character.HumanoidRootPart.CFrame = placeCFrame
+    end
+    return false;
+end
+
+autoegg('Advanced Egg')
+
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+local Window = OrionLib:MakeWindow({Name = "Dice Simulator", HidePremium = false, IntroEnabled = false})
+
+local Farming = Window:MakeTab({
+	Name = "Farming",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Eggs = Window:MakeTab({
+	Name = "Eggs",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Farming:AddToggle({
+    Name = "Auto Tap",
+    Default = false,
+    Callback = function(t)
+        getgenv().farmer = t
+    if t then
+        dotap()
+    end
+    end
+})
+
+Farming:AddToggle({
+    Name = "Auto Sell",
+    Default = false,
+    Callback = function(t)
+        getgenv().sell = t
+    if t then
+        autosell()
+    end
+    end
+})
+
+Eggs:AddToggle({
+    Name = "Auto Open Eggs",
+    Default = false,
+    Callback =  function(t)
+        getgenv().eggs = t
+        autoegg()
+    end
+})
+
+Eggs:AddDropdown({
+	Name = "Pick The Egg you want to hatch",
+	Default = "Basic Egg",
+	Options = {"Abyss Egg", "Advanced Egg", "Basic Egg", "Dark Egg", "Developer Egg", "Dominus Egg", "Epic Egg", "Novice Egg", "Robux Egg", "Summer Egg", "Cloud Egg", "Sky Egg", "Angel Egg", "Lollipop Egg", "Blue Sugar Egg", "Chocolate Egg", "Candy Egg", "Frosted Egg", "Snowflake Egg", "Blizzard Egg", "Slush Egg", "Clockwork Egg", "Eye Egg", "Pink Sugar Egg", "Backrooms Egg", "Dinosaur Egg", "Meteor Egg", "Extinct Egg", "MrBeast Egg", "Steampunk Egg", "Cog Egg", "Samurai Egg", "Ninja Egg"},
+	Callback = function(t)
+        getgenv().selectegg = t
+        print(getgenv().selectegg)
+	end    
+})
